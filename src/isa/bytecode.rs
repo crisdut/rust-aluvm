@@ -1285,13 +1285,14 @@ impl Bytecode for DigestOp {
     fn byte_count(&self) -> u16 { 3 }
 
     #[inline]
-    fn instr_range() -> RangeInclusive<u8> { INSTR_RIPEMD..=INSTR_SHA512 }
+    fn instr_range() -> RangeInclusive<u8> { INSTR_RIPEMD..=INSTR_BLAKE3 }
 
     fn instr_byte(&self) -> u8 {
         match self {
             DigestOp::Ripemd(_, _) => INSTR_RIPEMD,
             DigestOp::Sha256(_, _) => INSTR_SHA256,
             DigestOp::Sha512(_, _) => INSTR_SHA512,
+            DigestOp::Blake3(_, _) => INSTR_BLAKE3,
         }
     }
 
@@ -1302,7 +1303,8 @@ impl Bytecode for DigestOp {
         match self {
             DigestOp::Ripemd(src, dst)
             | DigestOp::Sha256(src, dst)
-            | DigestOp::Sha512(src, dst) => {
+            | DigestOp::Sha512(src, dst)
+            | DigestOp::Blake3(src, dst) => {
                 writer.write_u4(src)?;
                 writer.write_u4(dst)?;
             }

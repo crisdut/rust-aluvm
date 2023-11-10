@@ -8,6 +8,7 @@ version = "0.10.6"
 dependencies = [
  "amplify",
  "baid58",
+ "blake3",
  "curve25519-dalek",
  "getrandom 0.2.10",
  "half",

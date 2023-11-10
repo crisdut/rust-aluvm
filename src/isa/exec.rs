@@ -946,6 +946,16 @@ impl InstructionSet for DigestOp {
                 let hash: Option<[u8; 64]> = s.map(|s| sha2::Sha512::digest(s.as_ref()).into());
                 regs.set(RegR::R512, dst, hash);
             }
+            DigestOp::Blake3(src, dst) => {
+                let s = regs.get_s(*src);
+                none = s.is_none();
+                let hash: Option<[u8; 32]> = s.map(|s|  {
+                    let mut hasher = blake3::Hasher::default();
+                    hasher.update(s.as_ref());
+                    hasher.finalize().into()
+                });
+                regs.set(RegR::R256, dst, hash);
+            }
         }
         if none {
             regs.st0 = false;
